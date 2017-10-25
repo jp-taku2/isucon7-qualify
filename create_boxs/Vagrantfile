@@ -1,0 +1,177 @@
+
+VAGRANTFILE_API_VERSION = "2"
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+
+
+  config.vm.define :node01 do |node01|
+    node01.vm.hostname = "isubata-01"
+    node01.vm.network :private_network, ip: "192.168.56.101"
+    node01.vm.network :private_network, ip: "10.0.2.101", virtualbox__intnet: "isucon_net"
+    node01.vm.box = "ubuntu/isucon7"
+    config.vm.synced_folder ".", "/vagrant", disabled: true
+    config.vm.provider "virtualbox" do |vb|
+      vb.memory = "10240"
+      vb.cpus = 2
+    end
+    config.vm.provider :virtualbox do |vb|
+      vb.customize ["modifyvm", :id, "--natdnsproxy1", "off"]
+      vb.customize ["modifyvm", :id, "--natdnshostresolver1", "off"]
+      vb.customize ["modifyvm", :id, "--cableconnected1", "on"]
+    end
+    config.vm.provision :file do |file|
+      file.source = "./cmmon.sh"
+      file.destination = "/home/vagrant/cmmon.sh"
+    end
+    config.vm.provision "shell", inline: <<-SHELL
+      sudo sh /home/vagrant/cmmon.sh
+    SHELL
+    config.vm.provision :file do |file|
+      file.source = "./isubata"
+      file.destination = "/home/isucon/isubata"
+    end
+    config.vm.provision :file do |file|
+      file.source = "./xbuild"
+      file.destination = "/home/isucon/xbuild"
+    end
+    config.vm.provision :file do |file|
+      file.source = "./app.sh"
+      file.destination = "/home/vagrant/app.sh"
+    end
+
+    config.vm.provision "shell", inline: <<-SHELL
+      sudo sh /home/vagrant/app.sh
+    SHELL
+  end
+
+  config.vm.define :node02 do |node02|
+    node02.vm.hostname = "isubata-02"
+    node02.vm.network :private_network, ip: "192.168.56.102"
+    node02.vm.network :public_network, ip: "10.0.2.102", virtualbox__intnet: "isucon_net"
+    node02.vm.box = "ubuntu/isucon7"
+    config.vm.synced_folder ".", "/vagrant", disabled: true
+    config.vm.provider "virtualbox" do |vb|
+      vb.memory = "1024"
+      vb.cpus = 1
+    end
+    config.vm.provider :virtualbox do |vb|
+      vb.customize ["modifyvm", :id, "--natdnsproxy1", "off"]
+      vb.customize ["modifyvm", :id, "--natdnshostresolver1", "off"]
+    end
+    config.vm.provision :file do |file|
+      file.source = "./cmmon.sh"
+      file.destination = "/home/vagrant/cmmon.sh"
+    end
+    config.vm.provision "shell", inline: <<-SHELL
+      sudo sh /home/vagrant/cmmon.sh
+    SHELL
+    config.vm.provision :file do |file|
+      file.source = "./isubata"
+      file.destination = "/home/isucon/isubata"
+    end
+    config.vm.provision :file do |file|
+      file.source = "./xbuild"
+      file.destination = "/home/isucon/xbuild"
+    end
+    config.vm.provision :file do |file|
+      file.source = "./app.sh"
+      file.destination = "/home/vagrant/app.sh"
+    end
+    config.vm.provision "shell", inline: <<-SHELL
+      sudo sh /home/vagrant/app.sh
+    SHELL
+  end
+  config.vm.define :node03 do |node03|
+    node03.vm.hostname = "isubata-03"
+    node03.vm.network :private_network, ip: "192.168.56.103"
+    node03.vm.network :private_network, ip: "10.0.2.103", virtualbox__intnet: "isucon_net"
+    node03.vm.box_url = "file://localhost/home/takumi/work/isucon7/app-isucon7.box"
+    node03.vm.box = "ubuntu/appisucon7"
+    config.vm.synced_folder ".", "/vagrant", disabled: true
+    config.vm.provider "virtualbox" do |vb|
+      vb.memory = "10240"
+      vb.cpus = 2
+    end
+    config.vm.provider :virtualbox do |vb|
+      vb.customize ["modifyvm", :id, "--natdnsproxy1", "off"]
+      vb.customize ["modifyvm", :id, "--natdnshostresolver1", "off"]
+    end
+#    config.vm.provision :file do |file|
+#      file.source = "./cmmon.sh"
+#      file.destination = "/home/vagrant/cmmon.sh"
+#    end
+#    config.vm.provision "shell", inline: <<-SHELL
+#      sudo sh /home/vagrant/cmmon.sh
+#    SHELL
+#    config.vm.provision :file do |file|
+#      file.source = "./isubata"
+#      file.destination = "/home/isucon/isubata"
+#    end
+    config.vm.provision :file do |file|
+      file.source = "./db.sh"
+      file.destination = "/home/vagrant/db.sh"
+    end
+    config.vm.provision :file do |file|
+      file.source = "./init.sql"
+      file.destination = "/home/vagrant/init.sql"
+    end
+    config.vm.provision "shell", inline: <<-SHELL
+      sudo chown -R isucon: /home/isucon
+      sudo passwd isucon << EOF
+isucon
+isucon
+      EOF
+#      sudo sh /home/vagrant/db.sh
+    SHELL
+  end
+
+#  config.vm.define :node04 do |node04|
+#    node04.vm.hostname = "isubata-bentch"
+#    node04.vm.network :private_network, ip: "192.168.56.104"
+#    node04.vm.box = "ubuntu/isucon7"
+#    config.vm.synced_folder ".", "/vagrant", disabled: true
+#    config.vm.provider "virtualbox" do |vb|
+#      vb.memory = "4096"
+#      vb.cpus = 2
+#    end
+#    config.vm.provision "shell", inline: <<-SHELL
+#      set -e
+#      export DEBIAN_FRONTEND=noninteractive
+#      sudo apt update
+#      sudo apt install -y git nginx curl libreadline-dev pkg-config autoconf automake build-essential libmysqlclient-dev \
+#        libssl-dev python3 python3-dev python3-venv openjdk-8-jdk-headless libxml2-dev libcurl4-openssl-dev \
+#        libxslt1-dev re2c bison libbz2-dev libreadline-dev libssl-dev gettext libgettextpo-dev libicu-dev \
+#        libmhash-dev libmcrypt-dev libgd-dev libtidy-dev
+#      sudo useradd -m isucon
+#      sudo mkdir /home/isucon/.ssh
+#      sudo mkdir /home/isucon/local
+#      sudo gpasswd -a isucon adm
+#      sudo gpasswd -a isucon sudo
+#      sudo gpasswd -a isucon lpadmin
+#      sudo gpasswd -a isucon sambashare
+#      sudo chown -R vagrant: /home/isucon
+#    SHELL
+#    config.vm.provision :file do |file|
+#      file.source = "./isubata"
+#      file.destination = "/home/isucon/isubata"
+#    end
+#    config.vm.provision :file do |file|
+#      file.source = "./xbuild"
+#      file.destination = "/home/isucon/xbuild"
+#    end
+#    config.vm.provision "shell", inline: <<-SHELL
+#      sudo /home/isucon/xbuild/go-install     -f 1.9     /home/isucon/local/go
+#      sudo -u isucon export PATH=export PATH=/home/isucon/local/go/bin:/home/isucon/go/bin:$PATH
+#      sudo -u isucon go get github.com/constabulary/gb/...
+#      (
+#        cd ~/isubata/bench
+#        gb vendor restore
+#        make
+#      )
+#      sudo chown -R isucon: /home/isucon
+#      sudo passwd isucon << EOF
+#isucon
+#isucon
+#      EOF
+#    SHELL
+#  end
+end
