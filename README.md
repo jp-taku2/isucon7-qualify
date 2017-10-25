@@ -36,5 +36,5 @@ isucon:isucon
 ベンチについてもVagrantfileに設定済みです。
 node04がそれに当たります。
 
-ベンチの使い方に関しては以下を参照してください。
+ベンチの使い方に関しては以下を参照してください。  
 [isucon/isucon7-qualify](https://github.com/isucon/isucon7-qualify) 
