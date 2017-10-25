@@ -53,11 +53,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.define :node04 do |node04|
     node04.vm.hostname = "isubata-01"
     node04.vm.network :private_network, ip: "192.168.56.110"
+    node04.vm.box_url = "https://storage.googleapis.com/vagrantbox/isucon7/bench-isucon7.box"
     node04.vm.box = "ubuntu/benchisucon7"
     config.vm.synced_folder ".", "/vagrant", disabled: true
     config.vm.provider "virtualbox" do |vb|
-      vb.memory = "1024"
-      vb.cpus = 1
+      vb.memory = "8192"
+      vb.cpus = 2
     end
     config.vm.provider :virtualbox do |vb|
       vb.customize ["modifyvm", :id, "--natdnsproxy1", "off"]
