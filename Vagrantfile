@@ -17,6 +17,13 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       vb.customize ["modifyvm", :id, "--natdnsproxy1", "off"]
       vb.customize ["modifyvm", :id, "--natdnshostresolver1", "off"]
     end
+    config.vm.provision :file do |file|
+      file.source = "./network.sh"
+      file.destination = "/home/vagrant/network.sh"
+    end
+    config.vm.provision "shell", inline: <<-SHELL
+      sudo sh /home/vagrant/network.sh
+    SHELL
   end
   config.vm.define :node02 do |node02|
     node02.vm.hostname = "isubata-02"
@@ -33,6 +40,13 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       vb.customize ["modifyvm", :id, "--natdnsproxy1", "off"]
       vb.customize ["modifyvm", :id, "--natdnshostresolver1", "off"]
     end
+    config.vm.provision :file do |file|
+      file.source = "./network.sh"
+      file.destination = "/home/vagrant/network.sh"
+    end
+    config.vm.provision "shell", inline: <<-SHELL
+      sudo sh /home/vagrant/network.sh
+    SHELL
   end
   config.vm.define :node03 do |node03|
     node03.vm.hostname = "isubata-03"
@@ -49,6 +63,13 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       vb.customize ["modifyvm", :id, "--natdnsproxy1", "off"]
       vb.customize ["modifyvm", :id, "--natdnshostresolver1", "off"]
     end
+    config.vm.provision :file do |file|
+      file.source = "./network.sh"
+      file.destination = "/home/vagrant/network.sh"
+    end
+    config.vm.provision "shell", inline: <<-SHELL
+      sudo sh /home/vagrant/network.sh
+    SHELL
   end
   config.vm.define :node04 do |node04|
     node04.vm.hostname = "isubata-01"
