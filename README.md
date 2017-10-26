@@ -1,5 +1,30 @@
 # isucon7-qualify
 
+# aws
+
+## amiの仕様 
+amiにはネットワークの帯域制限が設定されています。
+スペック等は本番に準拠した形になっておりますが、クラウドが別なため全く同じわけではありません。
+
+ネットワークはNICを追加して10.0.1.0/24の固定IPをterraformにて割り振ります。
+
+## 準備
+`terraform/aws/terraform.tfvars` にAWSのkeyを設定してください。
+
+## 起動方法
+```
+git clone git@github.com:jp-taku2/isucon7-qualify.git
+cd isucon7-qualify/terraform/aws
+
+terraform init
+terraform apply
+```
+## bench
+ベンチマーカについては4台目がそれに当たります。
+公式が公開したものを使用しておりますが、複数台に対する実行方法できていません。
+
+
+#vagrant
 2017年に開催されたisuconの予選問題をvagrantで立ちあげれるようにしたものです。
 buildに時間がかかってしまうので、既存の*Vagrantfile&*を使って利用します。
 
@@ -13,7 +38,7 @@ buildに時間がかかってしまうので、既存の*Vagrantfile&*を使っ�
 - ネットワーク帯域をさくらクラウドに合わせ500Mbpsに絞ってあります。
 
 
-# 起動方法
+## 起動方法
 
 ```
 git clone git@github.com:jp-taku2/isucon7-qualify.git
@@ -32,7 +57,7 @@ vagrant:vagrant
 isucon:isucon
 ```
 
-# bench
+## bench
 ベンチについてもVagrantfileに設定済みです。
 node04がそれに当たります。
 
