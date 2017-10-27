@@ -91,7 +91,7 @@ resource "aws_security_group" "isucon" {
 }
 
 resource "aws_instance" "isubata-01" {
-  ami           = "ami-4944e52f"
+  ami           = "ami-73ad0d15"
   instance_type = "t2.micro"
   key_name      = "isucon"
 
@@ -129,7 +129,7 @@ resource "aws_eip" "isubata-01" {
 }
 
 resource "aws_instance" "isubata-02" {
-  ami           = "ami-4944e52f"
+  ami           = "ami-73ad0d15"
   instance_type = "t2.micro"
   key_name      = "isucon"
 
