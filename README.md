@@ -9,7 +9,9 @@ amiにはネットワークの帯域制限が設定されています。
 ネットワークはNICを追加して10.0.1.0/24の固定IPをterraformにて割り振ります。
 
 ## 準備
-`terraform/aws/terraform.tfvars` にAWSのkeyを設定してください。
+- `terraform/aws/terraform.tfvars` にAWSのkeyを設定してください。
+
+- `terraform/aws/main.tf` の[96,134,172,210]行目で鍵を設定しているので、任意のものに変更してください。
 
 ## 起動方法
 ```
@@ -23,8 +25,7 @@ terraform apply
 ベンチマーカについては4台目がそれに当たります。
 公式が公開したものを使用しておりますが、複数台に対する実行方法できていません。
 
-
-#vagrant
+# vagrant
 2017年に開催されたisuconの予選問題をvagrantで立ちあげれるようにしたものです。
 buildに時間がかかってしまうので、既存の*Vagrantfile&*を使って利用します。
 
